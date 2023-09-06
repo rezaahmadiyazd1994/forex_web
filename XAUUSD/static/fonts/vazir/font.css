@@ -1,0 +1,17 @@
+@font-face {
+    font-family: Vazir;
+    src: url(Vazir.woff);
+    font-weight: 400
+}
+
+* {
+    font-family: vazir!important;
+    font-size: 14px
+}
+
+.d-title {
+    height: 46vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}

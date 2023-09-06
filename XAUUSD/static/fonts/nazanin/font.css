@@ -1,0 +1,17 @@
+@font-face {
+    font-family: Nazanin;
+    src: url(BNazanin.woff);
+    font-weight: 400;
+}
+
+* {
+    font-family: Nazanin;
+    font-size: 14px;
+}
+
+.d-title {
+    height: 46vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}

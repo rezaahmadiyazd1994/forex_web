@@ -1,0 +1,20 @@
+@font-face {
+    font-family: Yekan;
+    src: url('Yekan.ttf');
+    font-weight: normal;
+}
+.Yekan
+{
+    font-family: Yekan !important;
+
+}
+* {
+    font-family: vazir;
+}
+
+.d-title {
+    height: 46vmax;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
