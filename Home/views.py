@@ -238,8 +238,10 @@ class Final_Calc:
 
         if(buy_counter > sell_counter):
             final_signal = "Buy"
-        else:
+        elif(sell_counter > buy_counter):
             final_signal = "Sell"
+        else:
+            final_signal = "Neutral"
 
 def pred_gold():
     global gold,gold_news,gold_final,gold_news_1,gold_news_2,gold1,gold2,gold3
@@ -317,6 +319,67 @@ def pred_gold():
     #compire news with data
     gold_final.save_signal()
     
+def pred_silver():
+    global silver,silver_news,silver_final,silver_news_1,silver1,silver2
+    silver = Data()
+    silver1 = Data()
+    silver2 = Data()
+    silver_news = News()
+    silver_news_1 = News()
+    silver_final = Final_Calc()
+
+    api_key = 'goldapi-pzslrli9209sg-io'
+    # get live stream silver data from goldapi.io
+    silver.live_data('http://www.goldapi.io/api/XAG/USD',api_key)
+    # get gold prices from json file
+    silver.get_prices(api_key)
+
+    silver1.load_data('uploads/Silver/data/1/silver.csv')
+    silver1.data_preprocessing(['Date','Action','Change','Open','High','Low','Close'])
+    silver1.load_model('uploads/Silver/model/model-1/model.json','uploads/Silver/model/model-1/model.h5')
+    silver1.pred(prev_high_plus_low)
+
+    silver2.load_data('uploads/Silver/data/2/silver.csv')
+    silver2.data_preprocessing(['Date','Action','Change','Open','High','Low','Close'])
+    silver2.load_model('uploads/Silver/model/model-2/model.json','uploads/Silver/model/model-2/model.h5')
+    silver2.pred(prev_high_open)
+
+
+    # search in search engine
+    # urls 
+    urls1 = [
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20buy%20sell&page=5&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20buy%20sell&page=4&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20buy%20sell&page=3&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20buy%20sell&page=2&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20buy%20sell&page=1&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20analysis&page=5&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20analysis&page=4&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20analysis&page=3&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20analysis&page=2&date=day',
+    'https://gerdoo.me/search/?query=xagusd%20twitter%20analysis&page=1&date=day',
+    'https://gerdoo.me/search/?query=political%20news&page=5&date=day',
+    'https://gerdoo.me/search/?query=political%20news&page=4&date=day',
+    'https://gerdoo.me/search/?query=political%20news&page=3&date=day',
+    'https://gerdoo.me/search/?query=political%20news&page=2&date=day',
+    'https://gerdoo.me/search/?query=political%20news&page=1&date=day',
+    'https://gerdoo.me/search/?query=Political%20and%20economic%20news&page=5&date=day',
+    'https://gerdoo.me/search/?query=Political%20and%20economic%20news&page=4&date=day',
+    'https://gerdoo.me/search/?query=Political%20and%20economic%20news&page=3&date=day',
+    'https://gerdoo.me/search/?query=Political%20and%20economic%20news&page=2&date=day',
+    'https://gerdoo.me/search/?query=Political%20and%20economic%20news&page=1&date=day',
+    ]
+
+
+    # process news 1
+    try:
+        silver_news_1.ProcessNews(urls1,'span','highlight-text')
+    except:
+        pass
+
+    #compire news with data
+    silver_final.save_signal()
+
 def homepage(request):
 
     pred_gold()
@@ -328,6 +391,17 @@ def homepage(request):
     'gold_high':gold.high_price,
     'gold_low':gold.low_price,
     'gold_signal':final_signal
+    }
+
+    pred_silver()
+
+    silver_input = {
+    'silver_change':silver.change,
+    'silver_price':silver.price,
+    'silver_open':silver.open_price,
+    'silver_high':silver.high_price,
+    'silver_low':silver.low_price,
+    'silver_signal':final_signal
     }
 
     return render(request,'index.html',gold_input)
