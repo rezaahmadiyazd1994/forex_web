@@ -115,7 +115,7 @@ class Data(Model_Data):
 
 
     def get_prices(self,api_key):
-        global prev_open,prev_high,prev_low,prev_close,prev_change,prev_high_low,prev_close_high,prev_sum_4_price,prev_volume,prev_high_open,prev_open_low
+        global prev_open,prev_high,prev_high_plus_low,prev_low,prev_close,prev_change,prev_high_low,prev_close_high,prev_sum_4_price,prev_volume,prev_high_open,prev_open_low
         # load prev prices value
         # read file
         with open('uploads/Gold/price.json', 'r') as myfile:
@@ -135,7 +135,7 @@ class Data(Model_Data):
         prev_sum_4_price = prev_open + prev_high + prev_low + prev_close
 
         #for only data1
-        prev_volume = y["p_volume"]
+        prev_high_plus_low = prev_high + prev_low
 
         #for only data2
         prev_high_open = prev_high - prev_open
@@ -252,36 +252,25 @@ def pred_gold():
     gold_news_2 = News()
     gold_final = Final_Calc()
 
-    # load gold datas
-    gold1.load_data('uploads/Gold/data/1/data.csv')
-    gold2.load_data('uploads/Gold/data/2/data.csv')
-    gold3.load_data('uploads/Gold/data/3/data.csv')
-
-    # drop not needed features from cvs file list
-    gold.drop_list = ['Date','Action','Change','Open','High','Low','Close','Volume']
-
-    gold1.data_preprocessing(gold.drop_list)
-
-    gold2.data_preprocessing(gold.drop_list)
-
-    gold3.data_preprocessing(gold.drop_list)
-
-    # load gold model and weight of model
-    gold1.load_model('uploads/Gold/model/model-1/model.json','uploads/Gold/model/model-1/model.h5')
-    gold2.load_model('uploads/Gold/model/model-2/model.json','uploads/Gold/model/model-2/model.h5')
-    gold3.load_model('uploads/Gold/model/model-3/model.json','uploads/Gold/model/model-3/model.h5')
-
     api_key = 'goldapi-pzslrli9209sg-io'
-
     # get live stream gold data from goldapi.io
     gold.live_data('http://www.goldapi.io/api/XAU/USD',api_key)
-
     # get gold prices from json file
     gold.get_prices(api_key)
 
-    # prediction
-    gold1.pred(prev_volume)
+    gold1.load_data('uploads/Gold/data/1/data.csv')
+    gold1.data_preprocessing(['Date','Action','Change','Open','High','Low','Close'])
+    gold1.load_model('uploads/Gold/model/model-1/model.json','uploads/Gold/model/model-1/model.h5')
+    gold1.pred(prev_high_plus_low)
+
+    gold2.load_data('uploads/Gold/data/2/data.csv')
+    gold2.data_preprocessing(['Date','Action','Change','Open','High','Low','Close'])
+    gold2.load_model('uploads/Gold/model/model-2/model.json','uploads/Gold/model/model-2/model.h5')
     gold2.pred(prev_high_open)
+
+    gold3.load_data('uploads/Gold/data/3/data.csv')
+    gold3.data_preprocessing(['Date','Action','Change','Open','High','Low','Close','Volume'])
+    gold3.load_model('uploads/Gold/model/model-3/model.json','uploads/Gold/model/model-3/model.h5')
     gold3.pred(prev_open_low)
 
     # search in search engine
