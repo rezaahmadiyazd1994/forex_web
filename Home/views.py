@@ -254,7 +254,7 @@ def pred_gold():
     gold_news_2 = News()
     gold_final = Final_Calc()
 
-    api_key = 'goldapi-pzslrli9209sg-io'
+    api_key = 'goldapi-187e5blrlgb9db7n-io'
     # get live stream gold data from goldapi.io
     gold.live_data('http://www.goldapi.io/api/XAU/USD',api_key)
     # get gold prices from json file
@@ -328,7 +328,7 @@ def pred_silver():
     silver_news_1 = News()
     silver_final = Final_Calc()
 
-    api_key = 'goldapi-pzslrli9209sg-io'
+    api_key = 'goldapi-187e5blrlgb9db7n-io'
     # get live stream silver data from goldapi.io
     silver.live_data('http://www.goldapi.io/api/XAG/USD',api_key)
     # get gold prices from json file
@@ -383,19 +383,15 @@ def pred_silver():
 def homepage(request):
 
     pred_gold()
+    pred_silver()
 
-    gold_input = {
+    forex = {
     'gold_change':gold.change,
     'gold_price':gold.price,
     'gold_open':gold.open_price,
     'gold_high':gold.high_price,
     'gold_low':gold.low_price,
-    'gold_signal':final_signal
-    }
-
-    pred_silver()
-
-    silver_input = {
+    'gold_signal':final_signal,
     'silver_change':silver.change,
     'silver_price':silver.price,
     'silver_open':silver.open_price,
@@ -404,5 +400,5 @@ def homepage(request):
     'silver_signal':final_signal
     }
 
-    return render(request,'index.html',gold_input)
+    return render(request,'index.html',forex)
 
