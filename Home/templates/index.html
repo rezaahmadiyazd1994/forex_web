@@ -13,7 +13,7 @@
   <style>
 
   body {
-    background:#ddd;
+    background:#eee;
   }
   td {
     text-align:center
@@ -34,14 +34,14 @@
 </head>
 <body>
 
-<div class="p-5 bg-primary text-white text-center shadow">
+<div class="p-5 bg-primary text-white text-center shadow" style="background: #198754 !important;">
   <h1>پیشبینی بازار فارکس</h1>
 </div>
 <br>
 <div class="m-5">
 <div class="table-scrollable" style="overflow-x: auto;max-width: 1200px;margin: auto;">
 <table class="table table-bordered table-responsive shadow" style="direction:rtl;width: 1200px;">
-    <thead class="table-dark">
+    <thead class="table-danger">
         <tr>
           <td>نام</td>
           <td>قیمت لحظه‌ای</td>
@@ -129,6 +129,109 @@
         <p>بالاترین قیمت تا الان: <span class="text-primary">{{ gold_high }}</span></p>
         <p>پایین‌ترین قیمت تا الان: <span class="text-primary">{{ gold_low }}</span></p>
         <p>قیمت فعلی: <span class="text-primary">{{ gold_price }}</span></p>     
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="m-5">
+<div class="table-scrollable" style="overflow-x: auto;max-width: 1200px;margin: auto;">
+<table class="table table-bordered table-responsive shadow" style="direction:rtl;width: 1200px;">
+    <thead class="table-primary">
+        <tr>
+          <td>نام</td>
+          <td>قیمت لحظه‌ای</td>
+          <td>تغییر نسبت به روز قبل</td>
+          <td>پیشبینی فردا</td>
+
+          {% if silver_signal != "Neutral" and silver_signal == "Buy" %}
+          <td>پیشنهاد</td>
+          <td>بهترین وقت خرید؟</td>
+          {% endif %}
+
+          {% if silver_signal != "Neutral" and silver_signal == "Sell" %}
+          <td>پیشنهاد</td>
+          <td>بهترین وقت فروش؟</td>
+          {% endif %}
+
+          <td>جزئیات</td>
+        </tr>
+      </thead>
+    <tbody>
+      <tr>
+        <td>نقره (XAGUSD)</td>
+        <td>{{ silver_price }}</td>
+        <td style="text-align: center;direction: ltr;">
+        {% if silver_change > 0 %}
+           +{{ silver_change }}
+        {% endif %}
+        {% if silver_change < 0 %}
+            {{ silver_change }}
+        {% endif %}
+        </td>
+
+        {% if silver_signal == "Buy" %}
+        <td>افزایش قیمت</td>
+        {% elif silver_signal == "Neutral" %}
+        <td>عدم قطعیت</td>
+        {% else %}
+        <td>کاهش قیمت</td>
+        {% endif %}
+
+        {% if silver_signal == "Buy" and silver_signal != "Neutral" %}
+        <td>خرید</td>
+        {% elif silver_signal == "Sell" and silver_signal != "Neutral" %}
+        <td>فروش</td>
+        {% endif %}
+
+        {% if silver_signal != "Neutral" and silver_signal == "Buy" and silver_change >= 0 %}
+        <td>خیر</td>
+        {% elif silver_signal != "Neutral" and silver_signal == "Buy" and silver_change < 0 %}
+        <td>بله</td>
+        {% endif %}
+
+        {% if silver_signal != "Neutral" and silver_signal == "Sell" and silver_change <= 0 %}
+        <td>خیر</td>
+        {% elif silver_signal != "Neutral" and silver_signal == "Sell" and silver_change > 0 %}
+        <td>بله</td>
+        {% endif %}
+
+        <td>
+          <!-- Button to open the Modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#xagusd">
+            مشاهده
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+<!-- The Modal -->
+<div class="modal" id="xagusd">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" style="direction: ltr">(XAGUSD) مشاهده جزئیات نقره </h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>قیمت بازشده: <span class="text-primary">{{ silver_open }}</span></p>
+        <p>بالاترین قیمت تا الان: <span class="text-primary">{{ silver_high }}</span></p>
+        <p>پایین‌ترین قیمت تا الان: <span class="text-primary">{{ silver_low }}</span></p>
+        <p>قیمت فعلی: <span class="text-primary">{{ silver_price }}</span></p>     
       </div>
 
       <!-- Modal footer -->

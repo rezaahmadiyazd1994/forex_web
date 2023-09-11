@@ -238,10 +238,13 @@ class Final_Calc:
 
         if(buy_counter > sell_counter):
             final_signal = "Buy"
+            self.final_signal = "Buy"
         elif(sell_counter > buy_counter):
             final_signal = "Sell"
+            self.final_signal = "Sell"
         else:
             final_signal = "Neutral"
+            self.final_signal = "Neutral"
 
 def pred_gold():
     global gold,gold_news,gold_final,gold_news_1,gold_news_2,gold1,gold2,gold3
@@ -391,13 +394,13 @@ def homepage(request):
     'gold_open':gold.open_price,
     'gold_high':gold.high_price,
     'gold_low':gold.low_price,
-    'gold_signal':final_signal,
+    'gold_signal':gold_final.final_signal,
     'silver_change':silver.change,
     'silver_price':silver.price,
     'silver_open':silver.open_price,
     'silver_high':silver.high_price,
     'silver_low':silver.low_price,
-    'silver_signal':final_signal
+    'silver_signal':silver_final.final_signal
     }
 
     return render(request,'index.html',forex)
