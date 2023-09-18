@@ -38,6 +38,24 @@
   body{
     background: linear-gradient(90deg, rgba(8,0,255,0.1825105042016807) 0%, rgba(190,0,195,0.3169642857142857) 100%)
   }
+  #div_buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 6rem auto;
+  }
+  #gold{
+    background: gold;
+    padding: 3rem 5rem;
+    border: 1px solid #555;
+    margin:25px;
+  }
+  #silver{
+    background: silver;
+    padding: 3rem 5rem;
+    border: 1px solid #555;
+    margin:25px;
+  }
   </style>
 </head>
 <body>
@@ -46,209 +64,10 @@
   <h1 style="text-shadow: 0 0 3px black;">پیشبینی بازار فارکس</h1>
 </div>
 <br>
-<div class="m-5">
-<div class="table-scrollable" style="overflow-x: auto;max-width: 1200px;margin: auto;">
-<table class="table table-bordered table-responsive shadow" style="direction:rtl;width: 1200px;">
-    <thead class="table-danger">
-        <tr>
-          <td>نام</td>
-          <td>قیمت لحظه‌ای</td>
-          <td>تغییر نسبت به روز قبل</td>
-          <td>پیشبینی فردا</td>
 
-          {% if gold_signal != "Neutral" and gold_signal == "Buy" %}
-          <td>پیشنهاد</td>
-          <td>بهترین وقت خرید؟</td>
-          {% endif %}
-
-          {% if gold_signal != "Neutral" and gold_signal == "Sell" %}
-          <td>پیشنهاد</td>
-          <td>بهترین وقت فروش؟</td>
-          {% endif %}
-
-          <td>جزئیات</td>
-        </tr>
-      </thead>
-    <tbody>
-      <tr>
-        <td>طلا (XAUUSD)</td>
-        <td>{{ gold_price }}</td>
-        <td style="text-align: center;direction: ltr;">
-        {% if gold_change > 0 %}
-           +{{ gold_change }}
-        {% endif %}
-        {% if gold_change < 0 %}
-            {{ gold_change }}
-        {% endif %}
-        </td>
-
-        {% if gold_signal == "Buy" %}
-        <td>افزایش قیمت</td>
-        {% elif gold_signal == "Neutral" %}
-        <td>عدم قطعیت</td>
-        {% else %}
-        <td>کاهش قیمت</td>
-        {% endif %}
-
-        {% if gold_signal == "Buy" and gold_signal != "Neutral" %}
-        <td>خرید</td>
-        {% elif gold_signal == "Sell" and gold_signal != "Neutral" %}
-        <td>فروش</td>
-        {% endif %}
-
-        {% if gold_signal != "Neutral" and gold_signal == "Buy" and gold_change >= 0 %}
-        <td>خیر</td>
-        {% elif gold_signal != "Neutral" and gold_signal == "Buy" and gold_change < 0 %}
-        <td>بله</td>
-        {% endif %}
-
-        {% if gold_signal != "Neutral" and gold_signal == "Sell" and gold_change <= 0 %}
-        <td>خیر</td>
-        {% elif gold_signal != "Neutral" and gold_signal == "Sell" and gold_change > 0 %}
-        <td>بله</td>
-        {% endif %}
-
-        <td>
-          <!-- Button to open the Modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#xauusd">
-            مشاهده
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
-
-
-<!-- The Modal -->
-<div class="modal" id="xauusd">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title" style="direction: ltr">(XAUUSD) مشاهده جزئیات طلا </h4>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <p>قیمت بازشده: <span class="text-primary">{{ gold_open }}</span></p>
-        <p>بالاترین قیمت تا الان: <span class="text-primary">{{ gold_high }}</span></p>
-        <p>پایین‌ترین قیمت تا الان: <span class="text-primary">{{ gold_low }}</span></p>
-        <p>قیمت فعلی: <span class="text-primary">{{ gold_price }}</span></p>     
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-<div class="m-5">
-<div class="table-scrollable" style="overflow-x: auto;max-width: 1200px;margin: auto;">
-<table class="table table-bordered table-responsive shadow" style="direction:rtl;width: 1200px;">
-    <thead class="table-primary">
-        <tr>
-          <td>نام</td>
-          <td>قیمت لحظه‌ای</td>
-          <td>تغییر نسبت به روز قبل</td>
-          <td>پیشبینی فردا</td>
-
-          {% if silver_signal != "Neutral" and silver_signal == "Buy" %}
-          <td>پیشنهاد</td>
-          <td>بهترین وقت خرید؟</td>
-          {% endif %}
-
-          {% if silver_signal != "Neutral" and silver_signal == "Sell" %}
-          <td>پیشنهاد</td>
-          <td>بهترین وقت فروش؟</td>
-          {% endif %}
-
-          <td>جزئیات</td>
-        </tr>
-      </thead>
-    <tbody>
-      <tr>
-        <td>نقره (XAGUSD)</td>
-        <td>{{ silver_price }}</td>
-        <td style="text-align: center;direction: ltr;">
-        {% if silver_change > 0 %}
-           +{{ silver_change }}
-        {% endif %}
-        {% if silver_change < 0 %}
-            {{ silver_change }}
-        {% endif %}
-        </td>
-
-        {% if silver_signal == "Buy" %}
-        <td>افزایش قیمت</td>
-        {% elif silver_signal == "Neutral" %}
-        <td>عدم قطعیت</td>
-        {% else %}
-        <td>کاهش قیمت</td>
-        {% endif %}
-
-        {% if silver_signal == "Buy" and silver_signal != "Neutral" %}
-        <td>خرید</td>
-        {% elif silver_signal == "Sell" and silver_signal != "Neutral" %}
-        <td>فروش</td>
-        {% endif %}
-
-        {% if silver_signal != "Neutral" and silver_signal == "Buy" and silver_change >= 0 %}
-        <td>خیر</td>
-        {% elif silver_signal != "Neutral" and silver_signal == "Buy" and silver_change < 0 %}
-        <td>بله</td>
-        {% endif %}
-
-        {% if silver_signal != "Neutral" and silver_signal == "Sell" and silver_change <= 0 %}
-        <td>خیر</td>
-        {% elif silver_signal != "Neutral" and silver_signal == "Sell" and silver_change > 0 %}
-        <td>بله</td>
-        {% endif %}
-
-        <td>
-          <!-- Button to open the Modal -->
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#xagusd">
-            مشاهده
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</div>
-
-
-<!-- The Modal -->
-<div class="modal" id="xagusd">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title" style="direction: ltr">(XAGUSD) مشاهده جزئیات نقره </h4>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <p>قیمت بازشده: <span class="text-primary">{{ silver_open }}</span></p>
-        <p>بالاترین قیمت تا الان: <span class="text-primary">{{ silver_high }}</span></p>
-        <p>پایین‌ترین قیمت تا الان: <span class="text-primary">{{ silver_low }}</span></p>
-        <p>قیمت فعلی: <span class="text-primary">{{ silver_price }}</span></p>     
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
-      </div>
-
-    </div>
-  </div>
+<div id="div_buttons">
+<a href="silver" id="silver" class="btn btn-lg">نقره</a>
+<a href="gold" id="gold" class="btn btn-lg">طلا</a>
 </div>
 
 </body>

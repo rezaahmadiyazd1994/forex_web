@@ -384,17 +384,23 @@ def pred_silver():
     silver_final.save_signal()
 
 def homepage(request):
+    return render(request,'index.html')
 
+def gold(request):
     pred_gold()
-    pred_silver()
-
-    forex = {
+    gold = {
     'gold_change':gold.change,
     'gold_price':gold.price,
     'gold_open':gold.open_price,
     'gold_high':gold.high_price,
     'gold_low':gold.low_price,
     'gold_signal':gold_final.final_signal,
+    }
+    return render(request,'gold.html',gold)
+
+def silver(request):
+    pred_silver()
+    silver = {
     'silver_change':silver.change,
     'silver_price':silver.price,
     'silver_open':silver.open_price,
@@ -402,6 +408,4 @@ def homepage(request):
     'silver_low':silver.low_price,
     'silver_signal':silver_final.final_signal
     }
-
-    return render(request,'index.html',forex)
-
+    return render(request,'silver.html',silver)
